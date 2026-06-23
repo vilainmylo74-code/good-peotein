@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Good Protein · Meal Prep – Ta semaine hyperprotéinée</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #1E1E1E;
+      --surface: #2A2A2A;
+      --surface2: #323232;
+      --border: #3D3D3D;
+      --lime: #C8F135;
+      --lime-dark: #A8CC1A;
+      --lime-dim: rgba(200,241,53,0.10);
+      --lime-border: rgba(200,241,53,0.28);
+      --white: #F5F5F2;
+      --muted: #8A8A82;
+      --faint: rgba(245,245,242,0.06);
+      --red: #FF4C4C;
+      --radius: 14px;
+      --radius-sm: 8px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* NAV */
+    .nav {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 24px 24px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: 0.02em;
+    }
+    .logo span { color: var(--lime); }
+    .nav-link {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .nav-link:hover { color: var(--lime); }
+
+    /* HERO */
+    .hero {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 56px 24px 64px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 56px;
+      align-items: center;
+    }
+    @media (max-width: 800px) {
+      .hero { grid-template-columns: 1fr; gap: 36px; padding: 40px 20px 48px; }
+      .nav { padding: 20px 20px 0; }
+    }
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--lime-dim);
+      border: 1px solid var(--lime-border);
+      color: var(--lime);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 5px 14px;
+      border-radius: 100px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(44px, 7vw, 72px);
+      font-weight: 800;
+      text-transform: uppercase;
+      line-height: 1.0;
+      margin-bottom: 18px;
+    }
+    .hero h1 em { font-style: normal; color: var(--lime); }
+    .hero-desc { font-size: 16px; color: var(--muted); line-height: 1.75; margin-bottom: 32px; }
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .stat-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px 12px;
+      text-align: center;
+    }
+    .stat-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 30px;
+      font-weight: 800;
+      color: var(--lime);
+    }
+    .stat-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 2px; }
+
+    /* HERO VISUAL — exemple box */
+    .hero-box {
+      background: #111;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 26px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-box::before {
+      content: '';
+      position: absolute;
+      top: -30px; right: -30px;
+      width: 140px; height: 140px;
+      background: var(--lime);
+      border-radius: 50%;
+      opacity: 0.07;
+    }
+    .hb-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--lime);
+      margin-bottom: 16px;
+    }
+    .hb-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .hb-item:last-child { border-bottom: none; }
+    .hb-emoji { font-size: 22px; flex-shrink: 0; }
+    .hb-info { flex: 1; }
+    .hb-name { font-size: 13px; font-weight: 600; }
+    .hb-day { font-size: 11px; color: var(--muted); margin-top: 1px; }
+    .hb-macros {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--lime);
+      text-align: right;
+      flex-shrink: 0;
+    }
+    .hb-macros span { font-size: 11px; font-weight: 400; color: var(--muted); display: block; }
+
+    /* COMMENT ÇA MARCHE */
+    .how-section {
+      max-width: 1060px;
+      margin: 0 auto 72px;
+      padding: 0 24px;
+    }
+    @media (max-width: 800px) { .how-section { padding: 0 20px; } }
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--lime);
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .section-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(28px, 5vw, 44px);
+      font-weight: 800;
+      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .how-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+    @media (max-width: 700px) { .how-grid { grid-template-columns: 1fr 1fr; } }
+    .how-step { text-align: center; }
+    .how-num {
+      width: 48px; height: 48px;
+      background: var(--lime); color: #111;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 22px; font-weight: 800;
+      margin: 0 auto 14px;
+    }
+    .how-step-title { font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+    .how-step-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+    /* SECTION COMMANDE */
+    .order-section {
+      max-width: 880px;
+      margin: 0 auto 80px;
+      padding: 0 24px;
+    }
+    @media (max-width: 800px) { .order-section { padding: 0 20px; } }
+
+    /* TOGGLE FRÉQUENCE */
+    .freq-wrap {
+      display: flex;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 4px;
+      max-width: 320px;
+      margin: 0 auto 36px;
+    }
+    .freq-btn {
+      flex: 1;
+      border: none;
+      background: transparent;
+      padding: 10px 18px;
+      border-radius: 100px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--muted);
+      transition: all 0.2s;
+    }
+    .freq-btn.active { background: var(--lime); color: #111; }
+
+    /* AVANTAGE ABONNEMENT */
+    .abo-avantage {
+      background: var(--lime-dim);
+      border: 1px solid var(--lime-border);
+      color: var(--lime);
+      border-radius: var(--radius-sm);
+      padding: 14px 20px;
+      font-size: 14px;
+      font-weight: 500;
+      text-align: center;
+      margin-bottom: 28px;
+      display: none;
+    }
+    .abo-avantage.show { display: block; }
+
+    /* FORMULES */
+    .formules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .formule-card {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      padding: 26px 22px;
+      cursor: pointer;
+      transition: border-color 0.2s, transform 0.15s;
+      position: relative;
+    }
+    .formule-card:hover { transform: translateY(-2px); }
+    .formule-card.selected { border-color: var(--lime); background: rgba(200,241,53,0.06); }
+    .formule-card.popular { border-color: var(--lime); }
+    .popular-badge {
+      position: absolute;
+      top: -12px; left: 50%;
+      transform: translateX(-50%);
+      background: var(--lime);
+      color: #111;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 14px;
+      border-radius: 100px;
+      white-space: nowrap;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .formule-check {
+      position: absolute;
+      top: 14px; right: 14px;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700;
+      transition: all 0.15s;
+    }
+    .formule-card.selected .formule-check { background: var(--lime); border-color: var(--lime); color: #111; }
+    .formule-emoji { font-size: 36px; margin-bottom: 14px; }
+    .formule-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 24px; font-weight: 800;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .formule-desc { font-size: 13px; color: var(--muted); margin-bottom: 16px; line-height: 1.5; }
+    .formule-inclus { list-style: none; margin-bottom: 20px; }
+    .formule-inclus li {
+      font-size: 13px;
+      padding: 3px 0;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .formule-inclus li::before { content: '✓'; color: var(--lime); font-weight: 700; flex-shrink: 0; }
+    .formule-prix {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 32px; font-weight: 800;
+      color: var(--lime);
+    }
+    .formule-prix-unit { font-size: 13px; font-weight: 400; color: var(--muted); font-family: 'Inter', sans-serif; }
+    .formule-barre { font-size: 12px; color: var(--muted); text-decoration: line-through; margin-top: 4px; }
+
+    /* FORMULAIRE */
+    .order-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 30px 28px;
+      margin-top: 14px;
+    }
+    .order-card-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 22px; font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 24px;
+    }
+    .field { margin-bottom: 16px; }
+    .field:last-child { margin-bottom: 0; }
+    .field-label {
+      display: block;
+      font-size: 12px; font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase; letter-spacing: 0.08em;
+      margin-bottom: 7px;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"] {
+      width: 100%;
+      padding: 12px 16px;
+      background: var(--surface2);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: 'Inter', sans-serif;
+      font-size: 15px; color: var(--white);
+      transition: border-color 0.15s;
+    }
+    input:focus { outline: none; border-color: var(--lime); }
+    input::placeholder { color: var(--muted); }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 500px) { .field-row { grid-template-columns: 1fr; } }
+
+    /* ALLERGÈNES */
+    .allerg-grid {
+      display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px;
+    }
+    .allerg-chip {
+      padding: 6px 14px;
+      border-radius: 100px;
+      border: 1.5px solid var(--border);
+      background: var(--surface2);
+      font-size: 13px; font-weight: 500; color: var(--white);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .allerg-chip input { display: none; }
+    .allerg-chip:has(input:checked) {
+      border-color: var(--lime);
+      background: var(--lime-dim);
+      color: var(--lime);
+    }
+
+    /* RECAP BOTTOM BAR */
+    .recap-bar {
+      background: #111;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 20px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .rb-info .rb-label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+    .rb-info .rb-val { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700; color: var(--white); margin-top: 2px; }
+    .btn-pay {
+      background: var(--lime); color: #111;
+      border: none; border-radius: var(--radius-sm);
+      padding: 15px 28px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 20px; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.06em;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+      white-space: nowrap;
+    }
+    .btn-pay:hover { background: var(--lime-dark); transform: translateY(-1px); }
+    .btn-pay:disabled { background: var(--border); color: var(--muted); cursor: not-allowed; transform: none; }
+    .pay-note { text-align: center; font-size: 12px; color: var(--muted); margin-top: 12px; }
+
+    .alert { display: none; padding: 12px 16px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 500; margin-top: 12px; }
+    .alert.error { background: rgba(255,76,76,0.12); color: var(--red); border: 1px solid rgba(255,76,76,0.3); display: block; }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="logo">GOOD<span>PROTEIN</span></div>
+  <a class="nav-link" href="gp-commande-midi.html">← Commande du midi</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <div class="hero-tag">🥗 Meal Prep hyperprotéiné</div>
+    <h1>Ta semaine.<br><em>Optimisée.</em></h1>
+    <p class="hero-desc">Des plats Good Protein préparés chaque semaine, avec tous tes macros calculés. Zéro prise de tête, 100% fait maison.</p>
+    <div class="hero-stats">
+      <div class="stat-box">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Fait maison</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">0</div>
+        <div class="stat-label">Conservateurs</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">7j</div>
+        <div class="stat-label">Fraîcheur</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-box">
+    <div class="hb-label">📦 Exemple box cette semaine</div>
+    <div class="hb-item">
+      <span class="hb-emoji">🍔</span>
+      <div class="hb-info">
+        <div class="hb-name">Good Bœuf 5%</div>
+        <div class="hb-day">Lundi</div>
+      </div>
+      <div class="hb-macros">42g P<span>520 kcal</span></div>
+    </div>
+    <div class="hb-item">
+      <span class="hb-emoji">🐔</span>
+      <div class="hb-info">
+        <div class="hb-name">Poulet Pané Avoine</div>
+        <div class="hb-day">Mardi</div>
+      </div>
+      <div class="hb-macros">48g P<span>490 kcal</span></div>
+    </div>
+    <div class="hb-item">
+      <span class="hb-emoji">🥦</span>
+      <div class="hb-info">
+        <div class="hb-name">Burger Végé</div>
+        <div class="hb-day">Mercredi</div>
+      </div>
+      <div class="hb-macros">28g P<span>420 kcal</span></div>
+    </div>
+    <div class="hb-item">
+      <span class="hb-emoji">🐟</span>
+      <div class="hb-info">
+        <div class="hb-name">Saumon Protéiné</div>
+        <div class="hb-day">Jeudi</div>
+      </div>
+      <div class="hb-macros">44g P<span>460 kcal</span></div>
+    </div>
+    <div class="hb-item">
+      <span class="hb-emoji">💪</span>
+      <div class="hb-info">
+        <div class="hb-name">Le Boss (double)</div>
+        <div class="hb-day">Vendredi</div>
+      </div>
+      <div class="hb-macros">65g P<span>740 kcal</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- COMMENT ÇA MARCHE -->
+<section class="how-section">
+  <p class="section-label">Le process</p>
+  <h2 class="section-title">Comment ça marche</h2>
+  <div class="how-grid">
+    <div class="how-step">
+      <div class="how-num">1</div>
+      <div class="how-step-title">Choisis ta formule</div>
+      <div class="how-step-desc">De 3 à 7 repas Good Protein par semaine, selon ton objectif.</div>
+    </div>
+    <div class="how-step">
+      <div class="how-num">2</div>
+      <div class="how-step-title">Paye en ligne</div>
+      <div class="how-step-desc">Paiement sécurisé. Abonnement résiliable à tout moment.</div>
+    </div>
+    <div class="how-step">
+      <div class="how-num">3</div>
+      <div class="how-step-title">On prépare ta box</div>
+      <div class="how-step-desc">Cuisinée le vendredi, avec tes macros calculés sur chaque plat.</div>
+    </div>
+    <div class="how-step">
+      <div class="how-num">4</div>
+      <div class="how-step-title">Retrait ou livraison</div>
+      <div class="how-step-desc">Chaque samedi matin. Au 104 av. de Muret ou chez toi.</div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION COMMANDE -->
+<section class="order-section">
+  <p class="section-label">Commande</p>
+  <h2 class="section-title">Choisis ta formule</h2>
+
+  <div class="freq-wrap">
+    <button class="freq-btn active" onclick="setFreq('unitaire', this)">À l'unité</button>
+    <button class="freq-btn" onclick="setFreq('abonnement', this)">Abonnement</button>
+  </div>
+
+  <div class="abo-avantage" id="aboAvantage">
+    💥 Abonnement : <strong>−10%</strong> sur toutes les formules + livraison offerte dès 2 semaines consécutives
+  </div>
+
+  <div class="formules-grid" id="formulesGrid"></div>
+
+  <div class="order-card">
+    <div class="order-card-title">Tes infos</div>
+    <div class="field-row">
+      <div class="field">
+        <label class="field-label">Prénom</label>
+        <input type="text" id="prenom" placeholder="Alex">
+      </div>
+      <div class="field">
+        <label class="field-label">Nom</label>
+        <input type="text" id="nom" placeholder="Dupont">
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label">Email</label>
+      <input type="email" id="email" placeholder="alex@email.com">
+    </div>
+    <div class="field">
+      <label class="field-label">Téléphone</label>
+      <input type="tel" id="tel" placeholder="06 12 34 56 78">
+    </div>
+    <div class="field">
+      <label class="field-label">Adresse livraison (vide = retrait 104 av. de Muret)</label>
+      <input type="text" id="adresse" placeholder="Laisse vide si retrait sur place">
+    </div>
+    <div class="field">
+      <label class="field-label">Régime / Allergies</label>
+      <div class="allerg-grid">
+        <label class="allerg-chip"><input type="checkbox" value="sans_gluten"> 🌾 Sans gluten</label>
+        <label class="allerg-chip"><input type="checkbox" value="sans_lactose"> 🥛 Sans lactose</label>
+        <label class="allerg-chip"><input type="checkbox" value="vegetarien"> 🥦 Végétarien</label>
+        <label class="allerg-chip"><input type="checkbox" value="vegan"> 🌿 Vegan</label>
+        <label class="allerg-chip"><input type="checkbox" value="sans_porc"> 🚫 Sans porc</label>
+        <label class="allerg-chip"><input type="checkbox" value="sans_fruits_mer"> 🦐 Sans fruits de mer</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="recap-bar">
+    <div class="rb-info">
+      <div class="rb-label">Ta commande</div>
+      <div class="rb-val" id="recapVal">Sélectionne une formule</div>
+    </div>
+    <button class="btn-pay" id="btnPay" onclick="payer()">🔒 Payer ma commande</button>
+  </div>
+
+  <div class="alert" id="alertBox"></div>
+  <p class="pay-note">Paiement sécurisé Stripe · Abonnement résiliable à tout moment</p>
+</section>
+
+<script>
+  const FORMULES = [
+    {
+      id: 'starter', nom: 'Starter', emoji: '🌱',
+      desc: 'Pour tester sans engagement',
+      plats: 3,
+      inclus: ['3 burgers Good Protein', 'Macros affichés', 'Contenants consignés'],
+      prix: 34.50, popular: false
+    },
+    {
+      id: 'semaine', nom: 'La Semaine', emoji: '💪',
+      desc: 'Le plus choisi par nos clients',
+      plats: 5,
+      inclus: ['5 repas lun→ven', 'Macros calculés', 'Frites airfryer incluses', 'Livraison offerte'],
+      prix: 56.00, popular: true
+    },
+    {
+      id: 'full', nom: 'Full Week', emoji: '🏆',
+      desc: 'Pour les plus ambitieux',
+      plats: 7,
+      inclus: ['7 repas lun→dim', 'Macros calculés', 'Frites + cookie inclus', 'Livraison offerte', '1 açaï bowl offert'],
+      prix: 74.00, popular: false
+    },
+  ];
+
+  let freq = 'unitaire';
+  let selected = null;
+
+  function setFreq(mode, btn) {
+    freq = mode;
+    document.querySelectorAll('.freq-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('aboAvantage').classList.toggle('show', mode === 'abonnement');
+    renderFormules();
+  }
+
+  function selectFormule(id) {
+    selected = id;
+    document.querySelectorAll('.formule-card').forEach(c => {
+      const s = c.dataset.id === id;
+      c.classList.toggle('selected', s);
+      c.querySelector('.formule-check').textContent = s ? '✓' : '';
+    });
+    updateRecap();
+  }
+
+  function getPrix(f) {
+    return freq === 'abonnement' ? f.prix * 0.9 : f.prix;
+  }
+
+  function renderFormules() {
+    document.getElementById('formulesGrid').innerHTML = FORMULES.map(f => {
+      const prix = getPrix(f);
+      const isSel = selected === f.id;
+      return `
+        <div class="formule-card${f.popular ? ' popular' : ''}${isSel ? ' selected' : ''}" data-id="${f.id}" onclick="selectFormule('${f.id}')">
+          ${f.popular ? '<span class="popular-badge">⭐ Le + choisi</span>' : ''}
+          <div class="formule-check">${isSel ? '✓' : ''}</div>
+          <div class="formule-emoji">${f.emoji}</div>
+          <div class="formule-name">${f.nom}</div>
+          <div class="formule-desc">${f.desc} · ${f.plats} repas</div>
+          <ul class="formule-inclus">${f.inclus.map(i => `<li>${i}</li>`).join('')}</ul>
+          <div class="formule-prix">${prix.toFixed(2).replace('.', ',')} €<span class="formule-prix-unit"> / ${freq === 'abonnement' ? 'sem · abonnement' : 'commande'}</span></div>
+          ${freq === 'abonnement' ? `<div class="formule-barre">${f.prix.toFixed(2).replace('.', ',')} € sans abo</div>` : ''}
+        </div>
+      `;
+    }).join('');
+    updateRecap();
+  }
+
+  function updateRecap() {
+    const rv = document.getElementById('recapVal');
+    if (!selected) { rv.textContent = 'Sélectionne une formule ci-dessus'; return; }
+    const f = FORMULES.find(x => x.id === selected);
+    const prix = getPrix(f);
+    rv.textContent = `${f.nom} · ${f.plats} repas · ${prix.toFixed(2).replace('.', ',')} € · ${freq === 'abonnement' ? 'Abonnement hebdo' : 'Commande unique'}`;
+  }
+
+  async function payer() {
+    const alertBox = document.getElementById('alertBox');
+    alertBox.className = 'alert';
+    if (!selected) { alertBox.className = 'alert error'; alertBox.textContent = '⚠️ Sélectionne une formule.'; return; }
+    const prenom = document.getElementById('prenom').value.trim();
+    const nom = document.getElementById('nom').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const tel = document.getElementById('tel').value.trim();
+    if (!prenom || !nom || !email || !tel) {
+      alertBox.className = 'alert error'; alertBox.textContent = '⚠️ Remplis tes coordonnées.'; return;
+    }
+    const f = FORMULES.find(x => x.id === selected);
+    const prix = getPrix(f);
+    const allergenes = [...document.querySelectorAll('.allerg-chip input:checked')].map(i => i.value);
+    const btn = document.getElementById('btnPay');
+    btn.disabled = true; btn.textContent = 'Redirection…';
+    try {
+      const res = await fetch('/api/create-checkout-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'mealprep',
+          mode: freq,
+          formule: f.id,
+          formule_nom: f.nom,
+          prix_cents: Math.round(prix * 100),
+          client: { prenom, nom, email, tel },
+          adresse: document.getElementById('adresse').value.trim(),
+          allergenes
+        })
+      });
+      const { url } = await res.json();
+      window.location.href = url;
+    } catch(e) {
+      alertBox.className = 'alert error'; alertBox.textContent = '❌ Erreur. Réessaie ou appelle-nous.';
+      btn.disabled = false; btn.textContent = '🔒 Payer ma commande';
+    }
+  }
+
+  renderFormules();
+</script>
+</body>
+</html>

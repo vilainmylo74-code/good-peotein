@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Good Protein · Commande midi – Livraison 12h</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #1E1E1E;
+      --surface: #2A2A2A;
+      --surface2: #323232;
+      --border: #3D3D3D;
+      --lime: #C8F135;
+      --lime-dark: #A8CC1A;
+      --lime-dim: rgba(200,241,53,0.12);
+      --white: #F5F5F2;
+      --muted: #8A8A82;
+      --faint: rgba(245,245,242,0.06);
+      --red: #FF4C4C;
+      --radius: 14px;
+      --radius-sm: 8px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* BANDEAU */
+    .top-bar {
+      background: var(--lime);
+      color: #111;
+      text-align: center;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 600;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    .top-bar .time-left {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      color: #111;
+    }
+    .top-bar.closed { background: var(--border); color: var(--muted); }
+
+    /* NAV */
+    .nav {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 24px 20px 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .logo {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: 0.02em;
+    }
+    .logo span { color: var(--lime); }
+    .nav-tag {
+      background: var(--lime-dim);
+      border: 1px solid rgba(200,241,53,0.3);
+      color: var(--lime);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 100px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* HERO */
+    .hero {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 48px 20px 40px;
+    }
+    .hero-eyebrow {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--lime);
+      margin-bottom: 14px;
+    }
+    .hero h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(42px, 8vw, 68px);
+      font-weight: 800;
+      line-height: 1.0;
+      color: var(--white);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .hero h1 em {
+      font-style: normal;
+      color: var(--lime);
+    }
+    .hero-desc {
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 440px;
+      line-height: 1.7;
+    }
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 24px;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--faint);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--white);
+    }
+
+    /* FORMULAIRE */
+    .form-wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 20px 80px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 28px;
+      margin-bottom: 16px;
+    }
+    .card-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 22px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .step-dot {
+      width: 26px;
+      height: 26px;
+      background: var(--lime);
+      color: #111;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      font-family: 'Inter', sans-serif;
+      flex-shrink: 0;
+    }
+
+    .field { margin-bottom: 16px; }
+    .field:last-child { margin-bottom: 0; }
+    .field-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      margin-bottom: 7px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    textarea {
+      width: 100%;
+      padding: 12px 16px;
+      background: var(--surface2);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      color: var(--white);
+      transition: border-color 0.15s;
+    }
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--lime);
+    }
+    input::placeholder, textarea::placeholder { color: var(--muted); }
+    textarea { min-height: 80px; resize: vertical; }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    @media (max-width: 500px) { .field-row { grid-template-columns: 1fr; } }
+
+    /* MODE LIVRAISON */
+    .delivery-toggle {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .delivery-opt {
+      background: var(--surface2);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 18px;
+      cursor: pointer;
+      text-align: center;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .delivery-opt input[type="radio"] { display: none; }
+    .delivery-opt:has(input:checked) {
+      border-color: var(--lime);
+      background: var(--lime-dim);
+    }
+    .delivery-opt .d-icon { font-size: 30px; margin-bottom: 8px; }
+    .delivery-opt .d-label { font-weight: 600; font-size: 14px; color: var(--white); }
+    .delivery-opt .d-sub { font-size: 12px; color: var(--muted); margin-top: 3px; }
+
+    /* PLATS */
+    .plat-list { display: flex; flex-direction: column; gap: 10px; }
+    .plat-item {
+      background: var(--surface2);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      transition: border-color 0.15s;
+    }
+    .plat-item.active { border-color: var(--lime); }
+    .plat-emoji { font-size: 26px; flex-shrink: 0; }
+    .plat-info { flex: 1; min-width: 0; }
+    .plat-name { font-weight: 600; font-size: 14px; color: var(--white); }
+    .plat-macros {
+      font-size: 11px;
+      color: var(--lime);
+      font-weight: 600;
+      margin-top: 2px;
+      letter-spacing: 0.04em;
+    }
+    .plat-kcal { font-size: 11px; color: var(--muted); margin-top: 1px; }
+    .plat-price { font-weight: 700; font-size: 15px; color: var(--white); flex-shrink: 0; }
+    .qty-ctrl { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .qty-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      color: var(--white);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      transition: background 0.1s, border-color 0.1s;
+    }
+    .qty-btn:hover { background: var(--lime); border-color: var(--lime); color: #111; }
+    .plat-qty {
+      width: 22px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 15px;
+      background: transparent;
+      border: none;
+      color: var(--white);
+      pointer-events: none;
+    }
+
+    /* MACROS RECAP MINI */
+    .macros-bar {
+      display: flex;
+      gap: 16px;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+    .macro-item { text-align: center; }
+    .macro-val { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 700; color: var(--lime); }
+    .macro-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+
+    /* RÉCAP */
+    .recap-card {
+      background: #111;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      margin-bottom: 16px;
+    }
+    .recap-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 16px;
+      color: var(--white);
+    }
+    .recap-line {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .recap-line .r-name { color: var(--muted); }
+    .recap-line:last-of-type { border-bottom: none; }
+    .recap-total {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+    .recap-total .t-label { font-weight: 600; font-size: 16px; }
+    .recap-total .t-amount {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--lime);
+    }
+
+    /* BOUTON PAYER */
+    .btn-pay {
+      width: 100%;
+      background: var(--lime);
+      color: #111;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 18px 24px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .btn-pay:hover { background: var(--lime-dark); transform: translateY(-1px); }
+    .btn-pay:active { transform: translateY(0); }
+    .btn-pay:disabled { background: var(--border); color: var(--muted); cursor: not-allowed; transform: none; }
+    .pay-note {
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 12px;
+    }
+
+    /* ALERT */
+    .alert { display: none; padding: 12px 16px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 500; margin-bottom: 14px; }
+    .alert.error { background: rgba(255,76,76,0.12); color: var(--red); border: 1px solid rgba(255,76,76,0.3); display: block; }
+
+    /* OVERLAY FERMÉ */
+    .closed-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.88);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+    }
+    .closed-overlay.show { display: flex; }
+    .closed-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 48px 40px;
+      max-width: 400px;
+      text-align: center;
+    }
+    .closed-card .c-icon { font-size: 52px; margin-bottom: 16px; }
+    .closed-card h2 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 32px;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .closed-card p { color: var(--muted); font-size: 15px; line-height: 1.6; }
+
+    @media (max-width: 600px) { .card { padding: 22px 18px; } }
+  </style>
+</head>
+<body>
+
+<!-- BANDEAU COMPTE À REBOURS -->
+<div class="top-bar" id="topBar">
+  ⚡ Commandes du midi ouvertes — il reste&nbsp;<span class="time-left" id="timeLeft">--:--:--</span>&nbsp;pour commander
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="logo">GOOD<span>PROTEIN</span></div>
+  <span class="nav-tag">Commande midi</span>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <p class="hero-eyebrow">🕙 Commande avant 10h30 · Livraison à midi</p>
+  <h1>Mange bien.<br><em>Recharge.</em></h1>
+  <p class="hero-desc">Tes burgers protéinés livrés à 12h pile. Commande avant 10h30, on s'occupe du reste.</p>
+  <div class="hero-badges">
+    <span class="badge">🛵 Livraison ou retrait</span>
+    <span class="badge">💪 Macros affichés</span>
+    <span class="badge">🔒 Paiement sécurisé</span>
+    <span class="badge">📍 Toulouse</span>
+  </div>
+</section>
+
+<!-- FORMULAIRE -->
+<div class="form-wrap">
+
+  <!-- SECTION 1 — COORDONNÉES -->
+  <div class="card">
+    <h2 class="card-title"><span class="step-dot">1</span>Tes infos</h2>
+    <div class="field-row">
+      <div class="field">
+        <label class="field-label" for="prenom">Prénom</label>
+        <input type="text" id="prenom" placeholder="Alex">
+      </div>
+      <div class="field">
+        <label class="field-label" for="nom">Nom</label>
+        <input type="text" id="nom" placeholder="Dupont">
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label" for="email">Email</label>
+      <input type="email" id="email" placeholder="alex@email.com">
+    </div>
+    <div class="field">
+      <label class="field-label" for="tel">Téléphone</label>
+      <input type="tel" id="tel" placeholder="06 12 34 56 78">
+    </div>
+  </div>
+
+  <!-- SECTION 2 — MODE -->
+  <div class="card">
+    <h2 class="card-title"><span class="step-dot">2</span>Livraison ou retrait</h2>
+    <div class="delivery-toggle">
+      <label class="delivery-opt">
+        <input type="radio" name="mode" value="livraison" checked>
+        <div class="d-icon">🛵</div>
+        <div class="d-label">Livraison</div>
+        <div class="d-sub">À ton adresse · 12h</div>
+      </label>
+      <label class="delivery-opt">
+        <input type="radio" name="mode" value="retrait">
+        <div class="d-icon">🏠</div>
+        <div class="d-label">Retrait sur place</div>
+        <div class="d-sub">104 av. de Muret · 12h</div>
+      </label>
+    </div>
+    <div class="field" id="addrField">
+      <label class="field-label" for="adresse">Adresse de livraison</label>
+      <input type="text" id="adresse" placeholder="12 rue des Fleurs, Toulouse">
+    </div>
+  </div>
+
+  <!-- SECTION 3 — MENU -->
+  <div class="card">
+    <h2 class="card-title"><span class="step-dot">3</span>Ta commande</h2>
+    <div class="plat-list" id="platList"></div>
+    <div class="macros-bar" id="macrosBar" style="display:none">
+      <div class="macro-item">
+        <div class="macro-val" id="totalKcal">0</div>
+        <div class="macro-label">kcal</div>
+      </div>
+      <div class="macro-item">
+        <div class="macro-val" id="totalP">0g</div>
+        <div class="macro-label">protéines</div>
+      </div>
+      <div class="macro-item">
+        <div class="macro-val" id="totalG">0g</div>
+        <div class="macro-label">glucides</div>
+      </div>
+      <div class="macro-item">
+        <div class="macro-val" id="totalL">0g</div>
+        <div class="macro-label">lipides</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4 — REMARQUES -->
+  <div class="card">
+    <h2 class="card-title"><span class="step-dot">4</span>Remarques</h2>
+    <div class="field">
+      <label class="field-label" for="remarques">Allergies, instructions, régime particulier…</label>
+      <textarea id="remarques" placeholder="Ex : sans gluten, sonnez au 2e, code portail…"></textarea>
+    </div>
+  </div>
+
+  <!-- RÉCAP -->
+  <div class="recap-card" id="recapCard">
+    <div class="recap-title">Récap commande</div>
+    <div id="recapLines"><p style="color:var(--muted);font-size:14px;">Ajoute des plats pour voir ton total.</p></div>
+    <div class="recap-total" id="recapTotal" style="display:none">
+      <span class="t-label">Total</span>
+      <span class="t-amount" id="totalAmount">0,00 €</span>
+    </div>
+  </div>
+
+  <div class="alert" id="alertBox"></div>
+
+  <button class="btn-pay" id="btnPay" onclick="lancerPaiement()">
+    🔒 Payer et confirmer ma commande
+  </button>
+  <p class="pay-note">Paiement 100% sécurisé via Stripe · Confirmation email immédiate</p>
+
+</div>
+
+<!-- OVERLAY FERMÉ -->
+<div class="closed-overlay" id="closedOverlay">
+  <div class="closed-card">
+    <div class="c-icon">⏰</div>
+    <h2>Commandes<br>fermées</h2>
+    <p>Les commandes du midi sont ouvertes jusqu'à <strong style="color:var(--lime)">10h30</strong>.<br>Reviens demain matin pour recharger !</p>
+  </div>
+</div>
+
+<script>
+  const HEURE_LIMITE = { h: 10, m: 30 };
+
+  // =============================================
+  // MENU — modifie ici les plats et les macros
+  // =============================================
+  const MENU = [
+    {
+      id: 'good_boeuf',
+      nom: 'Good Bœuf',
+      desc: 'Pain semi-complet, steak 5%, bacon des grisons, fromage protéiné, oignons confits, sauce maison',
+      emoji: '🍔',
+      prix: 12.90,
+      kcal: 520, p: 42, g: 38, l: 18
+    },
+    {
+      id: 'boss',
+      nom: 'Le Boss',
+      desc: 'Double steak 5%, bacon des grisons, fromage protéiné, oignons confits, sauce maison',
+      emoji: '💪',
+      prix: 15.90,
+      kcal: 740, p: 65, g: 42, l: 24
+    },
+    {
+      id: 'poulet',
+      nom: 'Poulet Pané Avoine',
+      desc: 'Steak poulet pané à l\'avoine, bacon des grisons, fromage protéiné, salade, sauce maison',
+      emoji: '🐔',
+      prix: 12.90,
+      kcal: 490, p: 48, g: 36, l: 14
+    },
+    {
+      id: 'saumon',
+      nom: 'Saumon Protéiné',
+      desc: 'Saumon pané sans friture, sauce aneth-ciboulette, guacamole maison, fromage allégé',
+      emoji: '🐟',
+      prix: 13.90,
+      kcal: 460, p: 44, g: 30, l: 16
+    },
+    {
+      id: 'vege',
+      nom: 'Burger Végé',
+      desc: 'Steak pois chiches-épinards, guacamole, oignons rouges, fromage végé, sauce maison',
+      emoji: '🥦',
+      prix: 11.90,
+      kcal: 420, p: 28, g: 44, l: 12
+    },
+    {
+      id: 'frites',
+      nom: 'Frites Airfryer',
+      desc: 'Cuisson sans matière grasse, croustillantes et peu caloriques',
+      emoji: '🍟',
+      prix: 4.50,
+      kcal: 180, p: 4, g: 36, l: 2
+    },
+    {
+      id: 'acai',
+      nom: 'Açaï Bowl',
+      desc: 'Acaï, fruits de saison, flocons d\'avoine, coulis de fruits, amandes torréfiées',
+      emoji: '🍇',
+      prix: 8.50,
+      kcal: 310, p: 10, g: 48, l: 8
+    },
+    {
+      id: 'cookie_cacah',
+      nom: 'Cookie Cacahuètes',
+      desc: 'Beurre de cacahuètes maison, fleur de sel, chocolat noir, whey Nutripure',
+      emoji: '🍪',
+      prix: 3.50,
+      kcal: 180, p: 12, g: 16, l: 8
+    },
+  ];
+
+  const qtys = {};
+  MENU.forEach(p => qtys[p.id] = 0);
+
+  function renderMenu() {
+    const list = document.getElementById('platList');
+    list.innerHTML = MENU.map(p => `
+      <div class="plat-item" id="item-${p.id}">
+        <span class="plat-emoji">${p.emoji}</span>
+        <div class="plat-info">
+          <div class="plat-name">${p.nom}</div>
+          <div class="plat-macros">${p.p}P · ${p.g}G · ${p.l}L</div>
+          <div class="plat-kcal">${p.kcal} kcal</div>
+        </div>
+        <span class="plat-price">${p.prix.toFixed(2).replace('.', ',')} €</span>
+        <div class="qty-ctrl">
+          <button class="qty-btn" onclick="changeQty('${p.id}', -1)">−</button>
+          <input class="plat-qty" value="0" id="qty-${p.id}" readonly>
+          <button class="qty-btn" onclick="changeQty('${p.id}', +1)">+</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function changeQty(id, delta) {
+    qtys[id] = Math.max(0, (qtys[id] || 0) + delta);
+    document.getElementById('qty-' + id).value = qtys[id];
+    document.getElementById('item-' + id).classList.toggle('active', qtys[id] > 0);
+    updateRecap();
+  }
+
+  function updateRecap() {
+    let total = 0, kcal = 0, p = 0, g = 0, l = 0;
+    const lines = [];
+    MENU.forEach(plat => {
+      const q = qtys[plat.id];
+      if (q > 0) {
+        const sous = q * plat.prix;
+        total += sous;
+        kcal += q * plat.kcal; p += q * plat.p; g += q * plat.g; l += q * plat.l;
+        lines.push(`<div class="recap-line"><span class="r-name">${q}× ${plat.nom}</span><span>${sous.toFixed(2).replace('.', ',')} €</span></div>`);
+      }
+    });
+
+    const rl = document.getElementById('recapLines');
+    const rt = document.getElementById('recapTotal');
+    const mb = document.getElementById('macrosBar');
+
+    if (lines.length === 0) {
+      rl.innerHTML = '<p style="color:var(--muted);font-size:14px;">Ajoute des plats pour voir ton total.</p>';
+      rt.style.display = 'none';
+      mb.style.display = 'none';
+    } else {
+      rl.innerHTML = lines.join('');
+      document.getElementById('totalAmount').textContent = total.toFixed(2).replace('.', ',') + ' €';
+      rt.style.display = 'flex';
+      document.getElementById('totalKcal').textContent = kcal;
+      document.getElementById('totalP').textContent = p + 'g';
+      document.getElementById('totalG').textContent = g + 'g';
+      document.getElementById('totalL').textContent = l + 'g';
+      mb.style.display = 'flex';
+    }
+  }
+
+  // Mode livraison
+  document.querySelectorAll('input[name="mode"]').forEach(r => {
+    r.addEventListener('change', () => {
+      const af = document.getElementById('addrField');
+      if (r.value === 'retrait') { af.style.opacity = '0.3'; af.style.pointerEvents = 'none'; }
+      else { af.style.opacity = '1'; af.style.pointerEvents = ''; }
+    });
+  });
+
+  // Compte à rebours
+  function tick() {
+    const now = new Date();
+    const lim = new Date(); lim.setHours(HEURE_LIMITE.h, HEURE_LIMITE.m, 0, 0);
+    const bar = document.getElementById('topBar');
+    const tl = document.getElementById('timeLeft');
+    if (now >= lim) {
+      bar.classList.add('closed');
+      bar.innerHTML = '⛔ Commandes fermées pour aujourd\'hui — Reviens demain matin !';
+      document.getElementById('closedOverlay').classList.add('show');
+      document.getElementById('btnPay').disabled = true;
+      return;
+    }
+    const diff = lim - now;
+    const h = Math.floor(diff / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    tl.textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  }
+  setInterval(tick, 1000); tick();
+
+  // Paiement
+  async function lancerPaiement() {
+    const alert = document.getElementById('alertBox');
+    alert.className = 'alert';
+    const prenom = document.getElementById('prenom').value.trim();
+    const nom = document.getElementById('nom').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const tel = document.getElementById('tel').value.trim();
+    const mode = document.querySelector('input[name="mode"]:checked').value;
+    const adresse = document.getElementById('adresse').value.trim();
+
+    if (!prenom || !nom || !email || !tel) {
+      alert.className = 'alert error'; alert.textContent = '⚠️ Merci de remplir tes coordonnées.'; return;
+    }
+    if (mode === 'livraison' && !adresse) {
+      alert.className = 'alert error'; alert.textContent = '⚠️ Indique ton adresse de livraison.'; return;
+    }
+    const commande = MENU.filter(p => qtys[p.id] > 0);
+    if (commande.length === 0) {
+      alert.className = 'alert error'; alert.textContent = '⚠️ Ajoute au moins un plat.'; return;
+    }
+
+    const btn = document.getElementById('btnPay');
+    btn.disabled = true; btn.textContent = 'Redirection vers le paiement…';
+
+    try {
+      const res = await fetch('/api/create-checkout-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          client: { prenom, nom, email, tel },
+          mode_livraison: mode,
+          adresse: mode === 'livraison' ? adresse : null,
+          remarques: document.getElementById('remarques').value,
+          plats: commande.map(p => ({ id: p.id, nom: p.nom, prix_cents: Math.round(p.prix * 100), quantite: qtys[p.id] }))
+        })
+      });
+      const { url } = await res.json();
+      window.location.href = url;
+    } catch(e) {
+      alert.className = 'alert error'; alert.textContent = '❌ Erreur. Réessaie ou appelle-nous directement.';
+      btn.disabled = false; btn.textContent = '🔒 Payer et confirmer ma commande';
+    }
+  }
+
+  renderMenu();
+</script>
+</body>
+</html>
