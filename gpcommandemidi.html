@@ -423,6 +423,7 @@
 <nav class="nav">
   <div class="logo">GOOD<span>PROTEIN</span></div>
   <span class="nav-tag">Commande midi</span>
+  <a href="gpmealprep.html" style="margin-left:auto;color:var(--muted);text-decoration:none;font-size:13px;font-weight:500;">Meal Prep →</a>
 </nav>
 
 <!-- HERO -->
@@ -694,16 +695,23 @@
   });
 
   // Compte à rebours
+  // ⚠️ MODE DÉMO : la coupure automatique à 10h30 est DÉSACTIVÉE pour que
+  //    le site reste consultable à toute heure par le client.
+  //    Pour la réactiver en production, décommentez le bloc ci-dessous
+  //    et supprimez la ligne "bar.innerHTML = '⚡ Commandes ... !';".
   function tick() {
     const now = new Date();
     const lim = new Date(); lim.setHours(HEURE_LIMITE.h, HEURE_LIMITE.m, 0, 0);
     const bar = document.getElementById('topBar');
     const tl = document.getElementById('timeLeft');
     if (now >= lim) {
-      bar.classList.add('closed');
-      bar.innerHTML = '⛔ Commandes fermées pour aujourd\'hui — Reviens demain matin !';
-      document.getElementById('closedOverlay').classList.add('show');
-      document.getElementById('btnPay').disabled = true;
+      // --- Coupure 10h30 désactivée (démo) ---
+      // bar.classList.add('closed');
+      // bar.innerHTML = '⛔ Commandes fermées pour aujourd\'hui — Reviens demain matin !';
+      // document.getElementById('closedOverlay').classList.add('show');
+      // document.getElementById('btnPay').disabled = true;
+      // return;
+      bar.innerHTML = '⚡ Commandes du midi ouvertes — passe ta commande !';
       return;
     }
     const diff = lim - now;

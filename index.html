@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Good Protein · Accueil</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #1E1E1E;
+      --surface: #2A2A2A;
+      --surface2: #323232;
+      --border: #3D3D3D;
+      --lime: #C8F135;
+      --lime-dark: #A8CC1A;
+      --white: #F5F5F2;
+      --muted: #8A8A82;
+      --radius: 14px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .logo {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 38px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .logo span { color: var(--lime); }
+
+    .tagline { color: var(--muted); font-size: 15px; margin-bottom: 40px; text-align: center; }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 22px;
+      width: 100%;
+      max-width: 720px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px 28px;
+      text-decoration: none;
+      color: var(--white);
+      transition: transform 0.15s ease, border-color 0.15s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .card:hover { transform: translateY(-4px); border-color: var(--lime); }
+
+    .card .emoji { font-size: 40px; }
+    .card h2 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 26px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+    .card p { color: var(--muted); font-size: 14px; }
+    .card .go {
+      margin-top: 14px;
+      color: var(--lime);
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    footer { color: var(--muted); font-size: 13px; margin-top: 48px; text-align: center; }
+  </style>
+</head>
+<body>
+
+  <div class="logo">GOOD<span>PROTEIN</span></div>
+  <p class="tagline">Mange bien. Recharge. · Toulouse 📍</p>
+
+  <div class="cards">
+    <a class="card" href="gpcommandemidi.html">
+      <span class="emoji">🍔</span>
+      <h2>Commande du midi</h2>
+      <p>Burgers protéinés livrés à 12h pile. Livraison ou retrait.</p>
+      <span class="go">Commander →</span>
+    </a>
+
+    <a class="card" href="gpmealprep.html">
+      <span class="emoji">🥗</span>
+      <h2>Meal Prep</h2>
+      <p>Tes repas de la semaine, à l'unité ou en abonnement hebdo.</p>
+      <span class="go">Découvrir →</span>
+    </a>
+  </div>
+
+  <footer>© Good Protein — Tous droits réservés.</footer>
+
+</body>
+</html>

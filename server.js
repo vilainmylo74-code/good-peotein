@@ -74,7 +74,7 @@ app.post('/api/create-checkout-session', async (req, res) => {
           remarques: remarques || '',
         },
         success_url: `${BASE_URL}/merci-midi.html?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${BASE_URL}/commande-midi.html`,
+        cancel_url: `${BASE_URL}/gpcommandemidi.html`,
         locale: 'fr',
         // Expiration après 30 min (délai commande)
         expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
@@ -109,7 +109,7 @@ app.post('/api/create-checkout-session', async (req, res) => {
             allergenes: (allergenes || []).join(', '),
           },
           success_url: `${BASE_URL}/merci-mealprep.html?session_id={CHECKOUT_SESSION_ID}`,
-          cancel_url: `${BASE_URL}/meal-prep.html`,
+          cancel_url: `${BASE_URL}/gpmealprep.html`,
           locale: 'fr',
           subscription_data: {
             trial_period_days: 0,
@@ -144,7 +144,7 @@ app.post('/api/create-checkout-session', async (req, res) => {
             allergenes: (allergenes || []).join(', '),
           },
           success_url: `${BASE_URL}/merci-mealprep.html?session_id={CHECKOUT_SESSION_ID}`,
-          cancel_url: `${BASE_URL}/meal-prep.html`,
+          cancel_url: `${BASE_URL}/gpmealprep.html`,
           locale: 'fr',
         };
       }
