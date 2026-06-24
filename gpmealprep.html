@@ -37,7 +37,7 @@
 
     /* NAV */
     .nav {
-      max-width: 1060px;
+      max-width: 1180px;
       margin: 0 auto;
       padding: 24px 24px 0;
       display: flex;
@@ -63,7 +63,7 @@
 
     /* HERO */
     .hero {
-      max-width: 1060px;
+      max-width: 1180px;
       margin: 0 auto;
       padding: 56px 24px 64px;
       display: grid;
@@ -170,7 +170,7 @@
 
     /* COMMENT ÇA MARCHE */
     .how-section {
-      max-width: 1060px;
+      max-width: 1180px;
       margin: 0 auto 72px;
       padding: 0 24px;
     }
@@ -213,10 +213,12 @@
 
     /* SECTION COMMANDE */
     .order-section {
-      max-width: 880px;
+      max-width: 1180px;
       margin: 0 auto 80px;
       padding: 0 24px;
     }
+    /* Zone paiement gardée étroite et lisible sous les formules larges */
+    .checkout-wrap { max-width: 760px; margin: 0 auto; }
     @media (max-width: 800px) { .order-section { padding: 0 20px; } }
 
     /* TOGGLE FRÉQUENCE */
@@ -270,10 +272,12 @@
       background: var(--surface);
       border: 2px solid var(--border);
       border-radius: var(--radius);
-      padding: 26px 22px;
+      padding: 0;
       cursor: pointer;
       transition: border-color 0.2s, transform 0.15s;
       position: relative;
+      display: flex;
+      flex-direction: column;
     }
     .formule-card:hover { transform: translateY(-2px); }
     .formule-card.selected { border-color: var(--lime); background: rgba(200,241,53,0.06); }
@@ -303,7 +307,18 @@
       transition: all 0.15s;
     }
     .formule-card.selected .formule-check { background: var(--lime); border-color: var(--lime); color: #111; }
-    .formule-emoji { font-size: 36px; margin-bottom: 14px; }
+    /* Grande image en haut de la formule (repli emoji si absente) */
+    .formule-thumb {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      background: linear-gradient(135deg, #2f2f2f 0%, #242424 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 64px; line-height: 1;
+      overflow: hidden;
+      border-radius: 12px 12px 0 0;
+    }
+    .formule-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .formule-body { padding: 22px 22px 24px; display: flex; flex-direction: column; flex: 1; }
     .formule-name {
       font-family: 'Barlow Condensed', sans-serif;
       font-size: 24px; font-weight: 800;
@@ -322,6 +337,7 @@
       font-family: 'Barlow Condensed', sans-serif;
       font-size: 32px; font-weight: 800;
       color: var(--lime);
+      margin-top: auto;
     }
     .formule-prix-unit { font-size: 13px; font-weight: 400; color: var(--muted); font-family: 'Inter', sans-serif; }
     .formule-barre { font-size: 12px; color: var(--muted); text-decoration: line-through; margin-top: 4px; }
@@ -522,6 +538,7 @@
 
   <div class="formules-grid" id="formulesGrid"></div>
 
+  <div class="checkout-wrap">
   <div class="order-card">
     <div class="order-card-title">Tes infos</div>
     <div class="field-row">
@@ -562,26 +579,29 @@
 
   <div class="alert" id="alertBox"></div>
   <p class="pay-note">Paiement sécurisé Stripe · Abonnement résiliable à tout moment</p>
+  </div>
 </section>
 
 <script>
+  // img : photo de la formule dans images/ (repli auto sur le visuel de
+  //       marque images/ph/<nom>.svg, puis sur l'emoji)
   const FORMULES = [
     {
-      id: 'starter', nom: 'Starter', emoji: '🌱',
+      id: 'starter', nom: 'Starter', emoji: '🌱', img: 'images/formule-starter.jpg',
       desc: 'Pour tester sans engagement',
       plats: 3,
       inclus: ['3 burgers Good Protein', 'Macros affichés', 'Contenants consignés'],
       prix: 34.50, popular: false
     },
     {
-      id: 'semaine', nom: 'La Semaine', emoji: '💪',
+      id: 'semaine', nom: 'La Semaine', emoji: '💪', img: 'images/formule-semaine.jpg',
       desc: 'Le plus choisi par nos clients',
       plats: 5,
       inclus: ['5 repas lun→ven', 'Macros calculés', 'Frites airfryer incluses', 'Livraison offerte'],
       prix: 56.00, popular: true
     },
     {
-      id: 'full', nom: 'Full Week', emoji: '🏆',
+      id: 'full', nom: 'Full Week', emoji: '🏆', img: 'images/formule-full.jpg',
       desc: 'Pour les plus ambitieux',
       plats: 7,
       inclus: ['7 repas lun→dim', 'Macros calculés', 'Frites + cookie inclus', 'Livraison offerte', '1 açaï bowl offert'],
@@ -622,12 +642,18 @@
         <div class="formule-card${f.popular ? ' popular' : ''}${isSel ? ' selected' : ''}" data-id="${f.id}" onclick="selectFormule('${f.id}')">
           ${f.popular ? '<span class="popular-badge">⭐ Le + choisi</span>' : ''}
           <div class="formule-check">${isSel ? '✓' : ''}</div>
-          <div class="formule-emoji">${f.emoji}</div>
-          <div class="formule-name">${f.nom}</div>
-          <div class="formule-desc">${f.desc} · ${f.plats} repas</div>
-          <ul class="formule-inclus">${f.inclus.map(i => `<li>${i}</li>`).join('')}</ul>
-          <div class="formule-prix">${prix.toFixed(2).replace('.', ',')} €<span class="formule-prix-unit"> / ${freq === 'abonnement' ? 'sem · abonnement' : 'commande'}</span></div>
-          ${freq === 'abonnement' ? `<div class="formule-barre">${f.prix.toFixed(2).replace('.', ',')} € sans abo</div>` : ''}
+          <div class="formule-thumb">
+            <img src="${f.img}" alt="${f.nom}" loading="lazy"
+                 data-ph="${f.img.replace('images/', 'images/ph/').replace(/\.jpg$/, '.svg')}"
+                 onerror="if(this.dataset.ph){this.src=this.dataset.ph;this.dataset.ph='';}else{this.parentElement.textContent='${f.emoji}';}">
+          </div>
+          <div class="formule-body">
+            <div class="formule-name">${f.nom}</div>
+            <div class="formule-desc">${f.desc} · ${f.plats} repas</div>
+            <ul class="formule-inclus">${f.inclus.map(i => `<li>${i}</li>`).join('')}</ul>
+            <div class="formule-prix">${prix.toFixed(2).replace('.', ',')} €<span class="formule-prix-unit"> / ${freq === 'abonnement' ? 'sem · abonnement' : 'commande'}</span></div>
+            ${freq === 'abonnement' ? `<div class="formule-barre">${f.prix.toFixed(2).replace('.', ',')} € sans abo</div>` : ''}
+          </div>
         </div>
       `;
     }).join('');

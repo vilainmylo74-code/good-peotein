@@ -55,6 +55,15 @@ Format conseillé : carré (ex. 600 × 600 px), `.jpg` léger (< 200 Ko).
 | Smoothie Maison | `smoothie.jpg` |
 | Kombucha | `kombucha.jpg` |
 
+## Page meal prep (`gpmealprep.html`)
+
+### 📦 Formules
+| Formule | Fichier attendu |
+|---|---|
+| Starter | `formule-starter.jpg` |
+| La Semaine | `formule-semaine.jpg` |
+| Full Week | `formule-full.jpg` |
+
 ---
 
 > Si tu veux utiliser un autre nom de fichier (ou une URL d'image en ligne),

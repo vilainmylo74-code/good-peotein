@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#303030"/><stop offset="1" stop-color="#1A1A1A"/></linearGradient>
+    <radialGradient id="blob" cx="0.82" cy="0.18" r="0.55"><stop offset="0" stop-color="#C8F135" stop-opacity="0.20"/><stop offset="1" stop-color="#C8F135" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="600" height="600" fill="url(#bg)"/>
+  <rect width="600" height="600" fill="url(#blob)"/>
+  <rect x="16" y="16" width="568" height="568" rx="26" fill="none" stroke="#C8F135" stroke-opacity="0.18" stroke-width="2"/>
+  <text x="300" y="92" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" letter-spacing="5" fill="#C8F135">FORMULE · 5 REPAS</text>
+  <text x="300" y="312" text-anchor="middle" dominant-baseline="central" font-size="210">💪</text>
+  <text x="300" y="498" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="46" font-weight="800" fill="#F5F5F2">La Semaine</text>
+  <text x="300" y="546" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" letter-spacing="4" fill="#8A8A82">GOOD<tspan fill="#C8F135">PROTEIN</tspan></text>
+</svg>
