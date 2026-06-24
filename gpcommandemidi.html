@@ -244,22 +244,71 @@
     .delivery-opt .d-label { font-weight: 600; font-size: 14px; color: var(--white); }
     .delivery-opt .d-sub { font-size: 12px; color: var(--muted); margin-top: 3px; }
 
+    /* CATÉGORIES (filtres cliquables) */
+    .cat-bar {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      margin-bottom: 18px;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .cat-bar::-webkit-scrollbar { display: none; }
+    .cat-btn {
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      background: var(--surface2);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 11px 14px;
+      min-width: 78px;
+      cursor: pointer;
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      transition: border-color 0.15s, background 0.15s, transform 0.1s;
+    }
+    .cat-btn:hover { transform: translateY(-2px); border-color: var(--lime-dark); }
+    .cat-btn .cat-emoji { font-size: 26px; line-height: 1; }
+    .cat-btn .cat-label { font-size: 12px; font-weight: 600; letter-spacing: 0.02em; }
+    .cat-btn .cat-count { font-size: 10px; color: var(--muted); }
+    .cat-btn.active { border-color: var(--lime); background: var(--lime-dim); }
+    .cat-btn.active .cat-label { color: var(--lime); }
+    .cat-btn.active .cat-count { color: var(--lime-dark); }
+
     /* PLATS */
     .plat-list { display: flex; flex-direction: column; gap: 10px; }
     .plat-item {
       background: var(--surface2);
       border: 1.5px solid var(--border);
       border-radius: var(--radius-sm);
-      padding: 14px 16px;
+      padding: 12px 14px;
       display: flex;
       align-items: center;
       gap: 14px;
       transition: border-color 0.15s;
     }
     .plat-item.active { border-color: var(--lime); }
-    .plat-emoji { font-size: 26px; flex-shrink: 0; }
+    /* Vignette photo produit (avec repli emoji si l'image est absente) */
+    .plat-thumb {
+      width: 62px; height: 62px;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, #2f2f2f 0%, #242424 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      line-height: 1;
+    }
+    .plat-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .plat-info { flex: 1; min-width: 0; }
     .plat-name { font-weight: 600; font-size: 14px; color: var(--white); }
+    .plat-desc { font-size: 11px; color: var(--muted); margin-top: 2px; line-height: 1.4; }
     .plat-macros {
       font-size: 11px;
       color: var(--lime);
@@ -491,6 +540,8 @@
   <!-- SECTION 3 — MENU -->
   <div class="card">
     <h2 class="card-title"><span class="step-dot">3</span>Ta commande</h2>
+    <p style="font-size:13px;color:var(--muted);margin:-12px 0 16px;">Choisis une catégorie, puis ajoute tes plats 👇</p>
+    <div class="cat-bar" id="catBar"></div>
     <div class="plat-list" id="platList"></div>
     <div class="macros-bar" id="macrosBar" style="display:none">
       <div class="macro-item">
@@ -553,87 +604,115 @@
   const HEURE_LIMITE = { h: 10, m: 30 };
 
   // =============================================
-  // MENU — modifie ici les plats et les macros
+  // CATÉGORIES — icônes cliquables (filtre le menu)
+  // =============================================
+  const CATEGORIES = [
+    { id: 'tout',           label: 'Tout',     emoji: '🍽️' },
+    { id: 'burger',         label: 'Burgers',  emoji: '🍔' },
+    { id: 'salade',         label: 'Salades',  emoji: '🥗' },
+    { id: 'accompagnement', label: 'Sides',    emoji: '🍟' },
+    { id: 'dessert',        label: 'Desserts', emoji: '🍪' },
+    { id: 'boisson',        label: 'Boissons', emoji: '🥤' },
+  ];
+
+  // =============================================
+  // MENU — modifie ici les plats, prix, macros et photos.
+  //   cat : burger | salade | accompagnement | dessert | boisson
+  //   img : chemin de la photo dans le dossier images/
+  //         (ex: 'images/good-boeuf.jpg'). Si la photo n'existe
+  //         pas encore, l'emoji s'affiche automatiquement à la place.
   // =============================================
   const MENU = [
-    {
-      id: 'good_boeuf',
-      nom: 'Good Bœuf',
-      desc: 'Pain semi-complet, steak 5%, bacon des grisons, fromage protéiné, oignons confits, sauce maison',
-      emoji: '🍔',
-      prix: 12.90,
-      kcal: 520, p: 42, g: 38, l: 18
-    },
-    {
-      id: 'boss',
-      nom: 'Le Boss',
-      desc: 'Double steak 5%, bacon des grisons, fromage protéiné, oignons confits, sauce maison',
-      emoji: '💪',
-      prix: 15.90,
-      kcal: 740, p: 65, g: 42, l: 24
-    },
-    {
-      id: 'poulet',
-      nom: 'Poulet Pané Avoine',
-      desc: 'Steak poulet pané à l\'avoine, bacon des grisons, fromage protéiné, salade, sauce maison',
-      emoji: '🐔',
-      prix: 12.90,
-      kcal: 490, p: 48, g: 36, l: 14
-    },
-    {
-      id: 'saumon',
-      nom: 'Saumon Protéiné',
-      desc: 'Saumon pané sans friture, sauce aneth-ciboulette, guacamole maison, fromage allégé',
-      emoji: '🐟',
-      prix: 13.90,
-      kcal: 460, p: 44, g: 30, l: 16
-    },
-    {
-      id: 'vege',
-      nom: 'Burger Végé',
-      desc: 'Steak pois chiches-épinards, guacamole, oignons rouges, fromage végé, sauce maison',
-      emoji: '🥦',
-      prix: 11.90,
-      kcal: 420, p: 28, g: 44, l: 12
-    },
-    {
-      id: 'frites',
-      nom: 'Frites Airfryer',
+    // ---- BURGERS ----
+    { id: 'good_boeuf', cat: 'burger', nom: 'Good Bœuf', emoji: '🍔', img: 'images/good-boeuf.jpg',
+      desc: 'Pain semi-complet, steak 5%, bacon des grisons, fromage protéiné, oignons confits, sauce maison au skyr',
+      prix: 12.90, kcal: 520, p: 42, g: 38, l: 18 },
+    { id: 'boss', cat: 'burger', nom: 'Le Boss', emoji: '💪', img: 'images/le-boss.jpg',
+      desc: 'Double steak 5%, bacon des grisons, fromage protéiné, avocat, œuf, sauce maison',
+      prix: 15.90, kcal: 740, p: 65, g: 42, l: 24 },
+    { id: 'poulet', cat: 'burger', nom: 'Poulet Pané Avoine', emoji: '🐔', img: 'images/poulet-pane.jpg',
+      desc: 'Steak poulet pané au son d\'avoine, bacon des grisons, fromage protéiné, salade, sauce maison',
+      prix: 12.90, kcal: 490, p: 48, g: 36, l: 14 },
+    { id: 'saumon', cat: 'burger', nom: 'Saumon Protéiné', emoji: '🐟', img: 'images/saumon.jpg',
+      desc: 'Pain semi-complet, saumon pané sans friture, sauce aneth-ciboulette, guacamole maison, fromage allégé',
+      prix: 13.90, kcal: 460, p: 44, g: 30, l: 16 },
+    { id: 'vege', cat: 'burger', nom: 'Burger Végé', emoji: '🥦', img: 'images/burger-vege.jpg',
+      desc: 'Steak veggie, guacamole, oignons rouges, salade, sauce maison',
+      prix: 11.90, kcal: 420, p: 28, g: 44, l: 12 },
+
+    // ---- SALADES ----
+    { id: 'salade_sport', cat: 'salade', nom: 'Salade Sport', emoji: '🥗', img: 'images/salade-sport.jpg',
+      desc: 'Salade verte, poulet fermier pané au son d\'avoine, parmesan, croûtons, bacon, sauce César allégée',
+      prix: 11.90, kcal: 430, p: 40, g: 22, l: 16 },
+    { id: 'sport_bowl', cat: 'salade', nom: 'Sport Bowl', emoji: '🥙', img: 'images/sport-bowl.jpg',
+      desc: 'Bowl protéiné : base céréales, poulet, légumes de saison, sauce maison',
+      prix: 12.50, kcal: 520, p: 45, g: 48, l: 14 },
+
+    // ---- ACCOMPAGNEMENTS ----
+    { id: 'frites', cat: 'accompagnement', nom: 'Frites Airfryer', emoji: '🍟', img: 'images/frites.jpg',
       desc: 'Cuisson sans matière grasse, croustillantes et peu caloriques',
-      emoji: '🍟',
-      prix: 4.50,
-      kcal: 180, p: 4, g: 36, l: 2
-    },
-    {
-      id: 'acai',
-      nom: 'Açaï Bowl',
-      desc: 'Acaï, fruits de saison, flocons d\'avoine, coulis de fruits, amandes torréfiées',
-      emoji: '🍇',
-      prix: 8.50,
-      kcal: 310, p: 10, g: 48, l: 8
-    },
-    {
-      id: 'cookie_cacah',
-      nom: 'Cookie Cacahuètes',
+      prix: 4.50, kcal: 180, p: 4, g: 36, l: 2 },
+
+    // ---- DESSERTS ----
+    { id: 'cookie_cacah', cat: 'dessert', nom: 'Cookie Cacahuètes', emoji: '🍪', img: 'images/cookie-cacahuetes.jpg',
       desc: 'Beurre de cacahuètes maison, fleur de sel, chocolat noir, whey Nutripure',
-      emoji: '🍪',
-      prix: 3.50,
-      kcal: 180, p: 12, g: 16, l: 8
-    },
+      prix: 3.50, kcal: 180, p: 12, g: 16, l: 8 },
+    { id: 'cookie_noisette', cat: 'dessert', nom: 'Cookie Noisette', emoji: '🍫', img: 'images/cookie-noisette.jpg',
+      desc: 'Sucre non raffiné, noisettes, chocolat blanc, whey',
+      prix: 3.50, kcal: 190, p: 11, g: 18, l: 9 },
+    { id: 'acai', cat: 'dessert', nom: 'Açaï Bowl', emoji: '🍇', img: 'images/acai-bowl.jpg',
+      desc: 'Açaï, fruits de saison, flocons d\'avoine, coulis de fruits, amandes torréfiées',
+      prix: 8.50, kcal: 310, p: 10, g: 48, l: 8 },
+
+    // ---- BOISSONS ----
+    { id: 'vitamin_well', cat: 'boisson', nom: 'Vitamin Well', emoji: '🥤', img: 'images/vitamin-well.jpg',
+      desc: 'Boisson vitaminée sans bulles, peu calorique et rafraîchissante',
+      prix: 3.50, kcal: 15, p: 0, g: 3, l: 0 },
+    { id: 'smoothie', cat: 'boisson', nom: 'Smoothie Maison', emoji: '🍓', img: 'images/smoothie.jpg',
+      desc: 'Smoothie naturel aux fruits frais, sans sucre ajouté',
+      prix: 5.50, kcal: 180, p: 5, g: 34, l: 1 },
+    { id: 'kombucha', cat: 'boisson', nom: 'Kombucha', emoji: '🫧', img: 'images/kombucha.jpg',
+      desc: 'Boisson fermentée légèrement acidulée, riche en probiotiques',
+      prix: 4.50, kcal: 30, p: 0, g: 6, l: 0 },
   ];
 
   const qtys = {};
   MENU.forEach(p => qtys[p.id] = 0);
 
+  // Barre de catégories (avec le nombre de produits par catégorie)
+  function renderCats() {
+    document.getElementById('catBar').innerHTML = CATEGORIES.map(c => {
+      const count = c.id === 'tout' ? MENU.length : MENU.filter(p => p.cat === c.id).length;
+      if (count === 0) return '';
+      return `
+        <button class="cat-btn${c.id === 'tout' ? ' active' : ''}" data-cat="${c.id}" onclick="filterCat('${c.id}', this)">
+          <span class="cat-emoji">${c.emoji}</span>
+          <span class="cat-label">${c.label}</span>
+          <span class="cat-count">${count} produit${count > 1 ? 's' : ''}</span>
+        </button>`;
+    }).join('');
+  }
+
+  function filterCat(cat, btn) {
+    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.plat-item').forEach(el => {
+      el.style.display = (cat === 'tout' || el.dataset.cat === cat) ? 'flex' : 'none';
+    });
+  }
+
   function renderMenu() {
     const list = document.getElementById('platList');
     list.innerHTML = MENU.map(p => `
-      <div class="plat-item" id="item-${p.id}">
-        <span class="plat-emoji">${p.emoji}</span>
+      <div class="plat-item" id="item-${p.id}" data-cat="${p.cat}">
+        <div class="plat-thumb">
+          <img src="${p.img}" alt="${p.nom}" loading="lazy"
+               onerror="this.parentElement.textContent='${p.emoji}';">
+        </div>
         <div class="plat-info">
           <div class="plat-name">${p.nom}</div>
-          <div class="plat-macros">${p.p}P · ${p.g}G · ${p.l}L</div>
-          <div class="plat-kcal">${p.kcal} kcal</div>
+          <div class="plat-desc">${p.desc}</div>
+          <div class="plat-macros">${p.p}P · ${p.g}G · ${p.l}L · ${p.kcal} kcal</div>
         </div>
         <span class="plat-price">${p.prix.toFixed(2).replace('.', ',')} €</span>
         <div class="qty-ctrl">
@@ -767,6 +846,7 @@
     }
   }
 
+  renderCats();
   renderMenu();
 </script>
 </body>

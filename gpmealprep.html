@@ -352,7 +352,8 @@
     }
     input[type="text"],
     input[type="email"],
-    input[type="tel"] {
+    input[type="tel"],
+    textarea {
       width: 100%;
       padding: 12px 16px;
       background: var(--surface2);
@@ -362,30 +363,11 @@
       font-size: 15px; color: var(--white);
       transition: border-color 0.15s;
     }
-    input:focus { outline: none; border-color: var(--lime); }
-    input::placeholder { color: var(--muted); }
+    input:focus, textarea:focus { outline: none; border-color: var(--lime); }
+    input::placeholder, textarea::placeholder { color: var(--muted); }
+    textarea { min-height: 84px; resize: vertical; line-height: 1.6; }
     .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
     @media (max-width: 500px) { .field-row { grid-template-columns: 1fr; } }
-
-    /* ALLERGÈNES */
-    .allerg-grid {
-      display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px;
-    }
-    .allerg-chip {
-      padding: 6px 14px;
-      border-radius: 100px;
-      border: 1.5px solid var(--border);
-      background: var(--surface2);
-      font-size: 13px; font-weight: 500; color: var(--white);
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-    .allerg-chip input { display: none; }
-    .allerg-chip:has(input:checked) {
-      border-color: var(--lime);
-      background: var(--lime-dim);
-      color: var(--lime);
-    }
 
     /* RECAP BOTTOM BAR */
     .recap-bar {
@@ -565,15 +547,8 @@
       <input type="text" id="adresse" placeholder="Laisse vide si retrait sur place">
     </div>
     <div class="field">
-      <label class="field-label">Régime / Allergies</label>
-      <div class="allerg-grid">
-        <label class="allerg-chip"><input type="checkbox" value="sans_gluten"> 🌾 Sans gluten</label>
-        <label class="allerg-chip"><input type="checkbox" value="sans_lactose"> 🥛 Sans lactose</label>
-        <label class="allerg-chip"><input type="checkbox" value="vegetarien"> 🥦 Végétarien</label>
-        <label class="allerg-chip"><input type="checkbox" value="vegan"> 🌿 Vegan</label>
-        <label class="allerg-chip"><input type="checkbox" value="sans_porc"> 🚫 Sans porc</label>
-        <label class="allerg-chip"><input type="checkbox" value="sans_fruits_mer"> 🦐 Sans fruits de mer</label>
-      </div>
+      <label class="field-label" for="allergies">Régime / Allergies / Intolérances</label>
+      <textarea id="allergies" placeholder="Écris ici tout ce qu'on doit savoir : allergies, intolérances, régime particulier, aliments à éviter… Ex : allergie arachides, sans gluten, pas de porc, végétarien le mardi…"></textarea>
     </div>
   </div>
 
@@ -680,7 +655,7 @@
     }
     const f = FORMULES.find(x => x.id === selected);
     const prix = getPrix(f);
-    const allergenes = [...document.querySelectorAll('.allerg-chip input:checked')].map(i => i.value);
+    const allergenes = document.getElementById('allergies').value.trim();
     const btn = document.getElementById('btnPay');
     btn.disabled = true; btn.textContent = 'Redirection…';
     try {

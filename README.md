@@ -7,8 +7,9 @@ Site de **Good Protein** : commande du midi (livraison 12h) et meal prep hebdoma
 | Fichier | Description |
 |---|---|
 | `index.html` | Page d'accueil (liens vers la commande du midi et le meal prep) |
-| `gpcommandemidi.html` | Page de commande du midi (choix des plats, livraison ou retrait) |
-| `gpmealprep.html` | Page meal prep (formules de la semaine, à l'unité ou en abonnement) |
+| `gpcommandemidi.html` | Page de commande du midi : menu complet filtrable par catégories (Burgers, Salades, Sides, Desserts, Boissons) avec photo par produit |
+| `gpmealprep.html` | Page meal prep (formules de la semaine, à l'unité ou en abonnement) — allergies en texte libre |
+| `images/` | Photos des produits (voir `images/README.md` pour les noms de fichiers attendus) |
 | `server.js` | Backend Node.js / Express : création des paiements Stripe + webhooks |
 
 ## Mise en route du backend
