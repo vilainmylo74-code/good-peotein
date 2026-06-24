@@ -707,7 +707,8 @@
       <div class="plat-item" id="item-${p.id}" data-cat="${p.cat}">
         <div class="plat-thumb">
           <img src="${p.img}" alt="${p.nom}" loading="lazy"
-               onerror="this.parentElement.textContent='${p.emoji}';">
+               data-ph="${p.img.replace('images/', 'images/ph/').replace(/\.jpg$/, '.svg')}"
+               onerror="if(this.dataset.ph){this.src=this.dataset.ph;this.dataset.ph='';}else{this.parentElement.textContent='${p.emoji}';}">
         </div>
         <div class="plat-info">
           <div class="plat-name">${p.nom}</div>

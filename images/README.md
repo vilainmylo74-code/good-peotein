@@ -3,10 +3,21 @@
 Dépose ici les vraies photos des produits Good Protein.
 
 **Important :** le nom du fichier doit être **exactement** celui indiqué ci-dessous
-(en `.jpg`). Dès qu'une photo est présente, elle remplace automatiquement
-l'emoji sur la page commande. Tant qu'elle est absente, l'emoji s'affiche.
+(en `.jpg`). Dès qu'une photo est présente, elle s'affiche automatiquement
+sur la page commande.
 
 Format conseillé : carré (ex. 600 × 600 px), `.jpg` léger (< 200 Ko).
+
+### Comment l'affichage choisit l'image (cascade automatique)
+
+1. **`images/<nom>.jpg`** — ta vraie photo (priorité absolue).
+2. **`images/ph/<nom>.svg`** — image de marque générée (déjà présente, sert de
+   visuel en attendant les vraies photos).
+3. **emoji** — dernier recours si rien n'est trouvé.
+
+> Tu n'as donc **rien à supprimer** : pose simplement ton `.jpg` dans `images/`
+> et il remplace automatiquement le visuel de marque correspondant.
+> Les visuels de marque sont dans `images/ph/` (ne pas y toucher sauf envie).
 
 ## Page commande (`gpcommandemidi.html`)
 
