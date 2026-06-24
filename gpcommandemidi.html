@@ -279,45 +279,68 @@
     .cat-btn.active .cat-label { color: var(--lime); }
     .cat-btn.active .cat-count { color: var(--lime-dark); }
 
-    /* PLATS */
-    .plat-list { display: flex; flex-direction: column; gap: 10px; }
+    /* SECTION MENU — pleine largeur */
+    .menu-section {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 8px 24px 56px;
+    }
+    @media (max-width: 600px) { .menu-section { padding: 8px 16px 40px; } }
+    .menu-eyebrow {
+      font-size: 12px; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--lime); margin-bottom: 8px;
+    }
+    .menu-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(30px, 5vw, 46px); font-weight: 800;
+      text-transform: uppercase; line-height: 1; margin-bottom: 22px;
+    }
+
+    /* PLATS — grille de cartes côte à côte */
+    .plat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 18px;
+    }
     .plat-item {
       background: var(--surface2);
       border: 1.5px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 12px 14px;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      transition: border-color 0.15s;
-    }
-    .plat-item.active { border-color: var(--lime); }
-    /* Vignette photo produit (avec repli emoji si l'image est absente) */
-    .plat-thumb {
-      width: 62px; height: 62px;
-      border-radius: var(--radius-sm);
+      border-radius: var(--radius);
       overflow: hidden;
-      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.15s, transform 0.12s;
+    }
+    .plat-item:hover { transform: translateY(-3px); border-color: var(--lime-dark); }
+    .plat-item.active { border-color: var(--lime); }
+    /* Grande photo produit (repli emoji si l'image est absente) */
+    .plat-thumb {
+      width: 100%;
+      aspect-ratio: 4 / 3;
       background: linear-gradient(135deg, #2f2f2f 0%, #242424 100%);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 30px;
+      font-size: 72px;
       line-height: 1;
+      overflow: hidden;
     }
     .plat-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .plat-info { flex: 1; min-width: 0; }
-    .plat-name { font-weight: 600; font-size: 14px; color: var(--white); }
-    .plat-desc { font-size: 11px; color: var(--muted); margin-top: 2px; line-height: 1.4; }
+    .plat-body { padding: 15px 16px 16px; display: flex; flex-direction: column; flex: 1; }
+    .plat-name { font-weight: 600; font-size: 16px; color: var(--white); }
+    .plat-desc { font-size: 12px; color: var(--muted); margin-top: 5px; line-height: 1.45; flex: 1; }
     .plat-macros {
       font-size: 11px;
       color: var(--lime);
       font-weight: 600;
-      margin-top: 2px;
+      margin-top: 12px;
       letter-spacing: 0.04em;
     }
-    .plat-kcal { font-size: 11px; color: var(--muted); margin-top: 1px; }
-    .plat-price { font-weight: 700; font-size: 15px; color: var(--white); flex-shrink: 0; }
+    .plat-foot {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 13px;
+    }
+    .plat-price { font-weight: 700; font-size: 19px; color: var(--white); }
     .qty-ctrl { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
     .qty-btn {
       width: 28px;
@@ -349,10 +372,14 @@
     /* MACROS RECAP MINI */
     .macros-bar {
       display: flex;
-      gap: 16px;
-      margin-top: 14px;
-      padding-top: 14px;
-      border-top: 1px solid var(--border);
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 36px;
+      margin-top: 22px;
+      padding: 18px 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
     }
     .macro-item { text-align: center; }
     .macro-val { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 700; color: var(--lime); }
@@ -488,6 +515,32 @@
   </div>
 </section>
 
+<!-- MENU — pleine largeur -->
+<section class="menu-section">
+  <p class="menu-eyebrow">🍔 Notre carte</p>
+  <h2 class="menu-title">Choisis tes plats</h2>
+  <div class="cat-bar" id="catBar"></div>
+  <div class="plat-grid" id="platList"></div>
+  <div class="macros-bar" id="macrosBar" style="display:none">
+    <div class="macro-item">
+      <div class="macro-val" id="totalKcal">0</div>
+      <div class="macro-label">kcal</div>
+    </div>
+    <div class="macro-item">
+      <div class="macro-val" id="totalP">0g</div>
+      <div class="macro-label">protéines</div>
+    </div>
+    <div class="macro-item">
+      <div class="macro-val" id="totalG">0g</div>
+      <div class="macro-label">glucides</div>
+    </div>
+    <div class="macro-item">
+      <div class="macro-val" id="totalL">0g</div>
+      <div class="macro-label">lipides</div>
+    </div>
+  </div>
+</section>
+
 <!-- FORMULAIRE -->
 <div class="form-wrap">
 
@@ -537,35 +590,9 @@
     </div>
   </div>
 
-  <!-- SECTION 3 — MENU -->
+  <!-- SECTION 3 — REMARQUES -->
   <div class="card">
-    <h2 class="card-title"><span class="step-dot">3</span>Ta commande</h2>
-    <p style="font-size:13px;color:var(--muted);margin:-12px 0 16px;">Choisis une catégorie, puis ajoute tes plats 👇</p>
-    <div class="cat-bar" id="catBar"></div>
-    <div class="plat-list" id="platList"></div>
-    <div class="macros-bar" id="macrosBar" style="display:none">
-      <div class="macro-item">
-        <div class="macro-val" id="totalKcal">0</div>
-        <div class="macro-label">kcal</div>
-      </div>
-      <div class="macro-item">
-        <div class="macro-val" id="totalP">0g</div>
-        <div class="macro-label">protéines</div>
-      </div>
-      <div class="macro-item">
-        <div class="macro-val" id="totalG">0g</div>
-        <div class="macro-label">glucides</div>
-      </div>
-      <div class="macro-item">
-        <div class="macro-val" id="totalL">0g</div>
-        <div class="macro-label">lipides</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- SECTION 4 — REMARQUES -->
-  <div class="card">
-    <h2 class="card-title"><span class="step-dot">4</span>Remarques</h2>
+    <h2 class="card-title"><span class="step-dot">3</span>Remarques</h2>
     <div class="field">
       <label class="field-label" for="remarques">Allergies, instructions, régime particulier…</label>
       <textarea id="remarques" placeholder="Ex : sans gluten, sonnez au 2e, code portail…"></textarea>
@@ -697,7 +724,7 @@
     document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     document.querySelectorAll('.plat-item').forEach(el => {
-      el.style.display = (cat === 'tout' || el.dataset.cat === cat) ? 'flex' : 'none';
+      el.style.display = (cat === 'tout' || el.dataset.cat === cat) ? '' : 'none';
     });
   }
 
@@ -710,16 +737,18 @@
                data-ph="${p.img.replace('images/', 'images/ph/').replace(/\.jpg$/, '.svg')}"
                onerror="if(this.dataset.ph){this.src=this.dataset.ph;this.dataset.ph='';}else{this.parentElement.textContent='${p.emoji}';}">
         </div>
-        <div class="plat-info">
+        <div class="plat-body">
           <div class="plat-name">${p.nom}</div>
           <div class="plat-desc">${p.desc}</div>
           <div class="plat-macros">${p.p}P · ${p.g}G · ${p.l}L · ${p.kcal} kcal</div>
-        </div>
-        <span class="plat-price">${p.prix.toFixed(2).replace('.', ',')} €</span>
-        <div class="qty-ctrl">
-          <button class="qty-btn" onclick="changeQty('${p.id}', -1)">−</button>
-          <input class="plat-qty" value="0" id="qty-${p.id}" readonly>
-          <button class="qty-btn" onclick="changeQty('${p.id}', +1)">+</button>
+          <div class="plat-foot">
+            <span class="plat-price">${p.prix.toFixed(2).replace('.', ',')} €</span>
+            <div class="qty-ctrl">
+              <button class="qty-btn" onclick="changeQty('${p.id}', -1)">−</button>
+              <input class="plat-qty" value="0" id="qty-${p.id}" readonly>
+              <button class="qty-btn" onclick="changeQty('${p.id}', +1)">+</button>
+            </div>
+          </div>
         </div>
       </div>
     `).join('');
